@@ -41,6 +41,14 @@ public class Main {
         firstName = infoScanner.next();
         System.out.println("What is your surname?");
         secondName = infoScanner.next();
+        System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
+                ",\nthen please use another bank. Thank you :)");
+        if (infoScanner.next().toLowerCase().equals('m') || infoScanner.next().toLowerCase().equals('f')){
+            gender = infoScanner.next().charAt(0);
+        }
+        else {
+            gender = askGenderAgain().charAt(0);
+        }
         System.out.println("Thank you, "+firstName + secondName + ", where do you live?");
         address = infoScanner.next();
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
@@ -51,7 +59,17 @@ public class Main {
         //Make sure it's an 11 digit integer
         System.out.println("And lastly, what is your email address?");
         //Email verification
-        
+    }
+    static String askGenderAgain(){
+        System.out.println("Error. Please type m or f for your gender");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.next().toLowerCase().equals('m') || scanner.next().toLowerCase().equals('f')){
+            return scanner.next();
+        }
+        else {
+            askGenderAgain();
+        }
+
     }
 
 }
