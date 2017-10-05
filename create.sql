@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS kbank; 
+USE kbank; 
+DROP TABLE IF EXISTS customer, account; 
+
+CREATE TABLE customer(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+	firstName VARCHAR(20) NOT NULL,
+	lastName VARCHAR(20) NOT NULL,
+	gender CHAR(1) NOT NULL, 
+	dateOfBirth DATE,
+	address VARCHAR(50) NOT NULL 
+);
+
+CREATE TABLE account(
+	accountID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	customerID INT NOT NULL, 
+	balance FLOAT(10,2),
+	FOREIGN KEY (customerID) REFERENCES customer(id)
+);
+
+ALTER TABLE account AUTO_INCREMENT=10000000;
+
