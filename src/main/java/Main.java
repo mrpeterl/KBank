@@ -16,32 +16,35 @@ public class Main {
     }
 
     public static void menu() {
+        int selection;
         System.out.println("Welcome to KBank!");
-        String mainMessage = String.format("Please enter the number corresponding to your desired action"
-                + "\n1.I would like to create a new account"
-                + "\n2.I would like to access my account"
-                + "\n3.Exit");
-        System.out.println(mainMessage);
-        Scanner menuScanner = new Scanner(System.in);
+        do {
+            String mainMessage = String.format("Please enter the number corresponding to your desired action"
+                    + "\n1.I would like to create a new account"
+                    + "\n2.I would like to access my account"
+                    + "\n3.Exit");
+            System.out.println(mainMessage);
+            Scanner menuScanner = new Scanner(System.in);
 
-        String selection = menuScanner.next();
-        switch (selection) {
-            case "1":
-                createAccount();
+            selection = menuScanner.nextInt();
+            switch (selection) {
+                case 1:
+                    createAccount();
 
-                break;
-            case 2:
-                //Access account via login
-                break;
+                    break;
+                case 2:
+                    //Access account via login
+                    break;
 
-            case "3":
-                System.exit(0);
+                case 3:
+                    System.exit(0);
 
-                break;
-            default:
-                System.out.println("Error. Please enter a number between 1 and 3");
-                menu();//Show menu again if invalid input
-        }
+                    break;
+                default:
+                    System.out.println("Error. Please enter a number between 1 and 3");
+                    menu();//Show menu again if invalid input
+            }
+        }while(selection!=3);
 
     }
 
@@ -73,11 +76,11 @@ public class Main {
         phoneNumbers(phone);
         //Make sure it's an 11 digit integer
         System.out.println("And lastly, what is your email address?");
-        verifyEmail(infoScanner.next());
-        email = infoScanner.next();
-        //Email verification
-
+        email = verifyEmail(infoScanner.next());
+        String createCustomer = "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('"+firstName+"','"+secondName+"','"+gender+"','"+dateOfBirth+"','"+address+"','"+email+"','"+phone+"');";
+        DatabaseConnection.main("password", createCustomer, 1);
         //INSERT INTO SQL
+        return;
     }
     public static String askGenderAgain(){
         System.out.println("Error. Please type m or f for your gender");
@@ -132,13 +135,15 @@ public class Main {
             phoneNumbers(string);
         }
     }
-    public static void verifyEmail(String email){
+    public static String verifyEmail(String email){
         if (!(email.contains('@'+"") && email.contains('.'+""))){
             System.out.println("Error. Please enter a valid email address");
             Scanner scanner = new Scanner(System.in);
             String myEmail = scanner.next();
             verifyEmail(myEmail);
+            return myEmail;
         }
+        return email;
     }
 
 }
