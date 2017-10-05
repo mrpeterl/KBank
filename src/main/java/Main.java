@@ -62,6 +62,7 @@ public class Main {
         Date theDate = getDob(dateOfBirth);
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
+        phoneNumbers(phone);
         //Make sure it's an 11 digit integer
         System.out.println("And lastly, what is your email address?");
         //Email verification
@@ -125,6 +126,23 @@ public class Main {
             getDob(dateofBirth);
         }
         return theDate;
+    }
+    public static boolean verifyPhoneNo(String number) {
+        if (number.length() != 11) {
+            if (isInteger(number)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void phoneNumbers(String number) {
+        if (!verifyPhoneNo(number)){
+            System.out.println("Error. Please enter a valid phone numeber");
+            Scanner scanner = new Scanner(System.in);
+            String string = scanner.next();
+            phoneNumbers(string);
+        }
+
     }
 }
 
