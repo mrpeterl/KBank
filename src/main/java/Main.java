@@ -50,14 +50,14 @@ public class Main {
         System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
                 ",\nthen please use another bank. Thank you :)");
         String myG = infoScanner.next().toLowerCase();
-        if (myG.equals("m") || myG.equals("m")){
-            gender = infoScanner.next().charAt(0);
+        if (myG.equals("m") || myG.equals("f")){
+            gender = myG.charAt(0);
         }
         else {
             gender = askGenderAgain().charAt(0);
         }
-        System.out.println("Thank you, "+firstName + secondName + ", where do you live?");
-        doAddress(infoScanner);
+        System.out.println("Thank you, "+firstName + " " + secondName + ", where do you live?");
+        address = infoScanner.next();
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
         dateOfBirth = infoScanner.next();
         Date theDate = getDob(dateOfBirth);
@@ -75,26 +75,13 @@ public class Main {
     public static String askGenderAgain(){
         System.out.println("Error. Please type m or f for your gender");
         Scanner scanner = new Scanner(System.in);
-        if (scanner.next().toLowerCase().equals('m') || scanner.next().toLowerCase().equals('f')){
-            return scanner.next();
+        String gender = scanner.next().toLowerCase();
+        if (gender.equals("m") || gender.equals("f")){
+            return gender;
         }
         else {
-            askGenderAgain();
-            return "";
+            return askGenderAgain();
         }
-    }
-    public static boolean checkAddress(String address){
-        String[] check = new String[3];//Address should have 2 spaces and therefore 3 elements in an array split with " "
-        check = address.split(" ");
-        if (isInteger(check[0])){//First element should be int for address
-            if (check[0].isEmpty() || check[1].isEmpty() || check[2].isEmpty()){
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        return false;
     }
     public static boolean isInteger(String s) {
         try {
@@ -107,17 +94,6 @@ public class Main {
         // only got here if we didn't return false
         return true;
     }
-    public static void doAddress(Scanner scanner){
-        String address = "";
-        if (checkAddress(scanner.next())){
-            address = scanner.next();
-        }
-        else {
-            //ask address again
-            System.out.println("Error. Please type in a valid address \"## road name\"");
-            doAddress(scanner);
-        }
-    }
     public static Date getDob(String date){
         Date theDate = new Date();
         try {
@@ -125,7 +101,7 @@ public class Main {
             theDate = formatter.parse(date);
             return theDate;
         }   catch (Exception ex){
-            System.out.println("Error. Please type your date of birth again");
+            System.out.println("Error. Please type your date of birth again in the format yyyy-mm-dd");
             Scanner scanner = new Scanner(System.in);
             String dateofBirth = scanner.next();
             getDob(dateofBirth);
@@ -133,8 +109,9 @@ public class Main {
         return theDate;
     }
     public static boolean verifyPhoneNo(String number) {
-        if (number.length() != 11) {
-            if (isInteger(number)){
+        String regex = "\\d+";
+        if (number.length() == 11) {
+            if (number.matches(regex)){
                 return true;
             }
         }
@@ -142,7 +119,7 @@ public class Main {
     }
     public static void phoneNumbers(String number) {
         if (!verifyPhoneNo(number)){
-            System.out.println("Error. Please enter a valid phone numeber");
+            System.out.println("Error. Please enter a valid phone number");
             Scanner scanner = new Scanner(System.in);
             String string = scanner.next();
             phoneNumbers(string);
