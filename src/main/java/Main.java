@@ -67,7 +67,7 @@ public class Main {
             gender = askGenderAgain().charAt(0);
         }
         System.out.println("Thank you, "+firstName + " " + secondName + ", where do you live?");
-        address = infoScanner.next();
+        address = infoScanner.nextLine();
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
         dateOfBirth = infoScanner.next();
         Date theDate = getDob(dateOfBirth);
