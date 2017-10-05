@@ -30,6 +30,7 @@ public class Main {
                 System.out.println("Error. Please enter a number between 1 and 3");
                 menu();//Show menu again if invalid input
         }
+        
     }
 }
 
