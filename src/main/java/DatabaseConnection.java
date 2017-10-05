@@ -11,7 +11,7 @@ public class DatabaseConnection {
         }
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/kbank", "root", password);
+                    "jdbc:mysql://localhost/kbank?useSSL=false", "root", password);
             Statement statement = connection.createStatement();
             switch (utility){
                 case 1:
