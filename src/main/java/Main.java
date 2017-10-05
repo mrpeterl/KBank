@@ -49,7 +49,8 @@ public class Main {
         secondName = infoScanner.next();
         System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
                 ",\nthen please use another bank. Thank you :)");
-        if (infoScanner.next().toLowerCase().equals('m') || infoScanner.next().toLowerCase().equals('f')){
+        String myG = infoScanner.next().toLowerCase();
+        if (myG.equals("m") || myG.equals("m")){
             gender = infoScanner.next().charAt(0);
         }
         else {
@@ -65,7 +66,11 @@ public class Main {
         phoneNumbers(phone);
         //Make sure it's an 11 digit integer
         System.out.println("And lastly, what is your email address?");
+        verifyEmail(infoScanner.next());
+        email = infoScanner.next();
         //Email verification
+
+        //INSERT INTO SQL
     }
     public static String askGenderAgain(){
         System.out.println("Error. Please type m or f for your gender");
@@ -119,7 +124,7 @@ public class Main {
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             theDate = formatter.parse(date);
             return theDate;
-        } catch (Exception ex){
+        }   catch (Exception ex){
             System.out.println("Error. Please type your date of birth again");
             Scanner scanner = new Scanner(System.in);
             String dateofBirth = scanner.next();
@@ -142,7 +147,15 @@ public class Main {
             String string = scanner.next();
             phoneNumbers(string);
         }
-
     }
+    public static void verifyEmail(String email){
+        if (!(email.contains('@'+"") && email.contains('.'+""))){
+            System.out.println("Error. Please enter a valid email address");
+            Scanner scanner = new Scanner(System.in);
+            String myEmail = scanner.next();
+            verifyEmail(myEmail);
+        }
+    }
+
 }
 
