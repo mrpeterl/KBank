@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 public class Main {
 
@@ -23,7 +24,7 @@ public class Main {
         String selection = menuScanner.next();
         switch (selection) {
             case "1":
-                //Create account
+                createAccount();
                 break;
             case "2":
                 //Access account via login
@@ -58,16 +59,7 @@ public class Main {
         doAddress(infoScanner);
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
         dateOfBirth = infoScanner.next();
-
-        Format formatter;
-        Date date = new Date();
-
-        formatter = new SimpleDateFormat("yyyy-MM-dd");
-        dateOfBirth = formatter.format(date);
-        System.out.println(s);
-
-
-        //Make sure a date passable is made
+        Date theDate = getDob(dateOfBirth);
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
         //Make sure it's an 11 digit integer
@@ -82,6 +74,7 @@ public class Main {
         }
         else {
             askGenderAgain();
+            return "";
         }
     }
     public static boolean checkAddress(String address){
@@ -120,11 +113,18 @@ public class Main {
         }
     }
     public static Date getDob(String date){
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date theDate = new Date();
-        theDate = formatter.format(date);
-
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            theDate = formatter.parse(date);
+            return theDate;
+        } catch (Exception ex){
+            System.out.println("Error. Please type your date of birth again");
+            Scanner scanner = new Scanner(System.in);
+            String dateofBirth = scanner.next();
+            getDob(dateofBirth);
+        }
+        return theDate;
     }
-
 }
 
