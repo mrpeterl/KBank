@@ -1,4 +1,9 @@
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import java.util.Scanner;
+import java.util.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 public class Main {
 
@@ -50,9 +55,18 @@ public class Main {
             gender = askGenderAgain().charAt(0);
         }
         System.out.println("Thank you, "+firstName + secondName + ", where do you live?");
-        address = infoScanner.next();
+        doAddress(infoScanner);
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
         dateOfBirth = infoScanner.next();
+
+        Format formatter;
+        Date date = new Date();
+
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        dateOfBirth = formatter.format(date);
+        System.out.println(s);
+
+
         //Make sure a date passable is made
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
@@ -60,7 +74,7 @@ public class Main {
         System.out.println("And lastly, what is your email address?");
         //Email verification
     }
-    static String askGenderAgain(){
+    public static String askGenderAgain(){
         System.out.println("Error. Please type m or f for your gender");
         Scanner scanner = new Scanner(System.in);
         if (scanner.next().toLowerCase().equals('m') || scanner.next().toLowerCase().equals('f')){
@@ -69,6 +83,46 @@ public class Main {
         else {
             askGenderAgain();
         }
+    }
+    public static boolean checkAddress(String address){
+        String[] check = new String[3];//Address should have 2 spaces and therefore 3 elements in an array split with " "
+        check = address.split(" ");
+        if (isInteger(check[0])){//First element should be int for address
+            if (check[0].isEmpty() || check[1].isEmpty() || check[2].isEmpty()){
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+    public static void doAddress(Scanner scanner){
+        String address = "";
+        if (checkAddress(scanner.next())){
+            address = scanner.next();
+        }
+        else {
+            //ask address again
+            System.out.println("Error. Please type in a valid address \"## road name\"");
+            doAddress(scanner);
+        }
+    }
+    public static Date getDob(String date){
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date theDate = new Date();
+        theDate = formatter.format(date);
 
     }
 
