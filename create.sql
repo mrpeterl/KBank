@@ -17,7 +17,7 @@ CREATE TABLE account(
 	accountID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	customerID INT NOT NULL, 
 	creationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-	balance FLOAT(10,2),
+	balance DECIMAL(13,2),
 	FOREIGN KEY (customerID) REFERENCES customer(id)
 );
 
