@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS kbank; 
 USE kbank; 
-DROP TABLE IF EXISTS customer, account; 
+DROP TABLE IF EXISTS account, customer; 
 
 CREATE TABLE customer(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -8,7 +8,9 @@ CREATE TABLE customer(
 	lastName VARCHAR(20) NOT NULL,
 	gender CHAR(1) NOT NULL, 
 	dateOfBirth DATE,
-	address VARCHAR(50) NOT NULL 
+	address VARCHAR(50) NOT NULL, 
+	email VARCHAR(50) NOT NULL,
+	phone VARCHAR(11) NOT NULL
 );
 
 CREATE TABLE account(
