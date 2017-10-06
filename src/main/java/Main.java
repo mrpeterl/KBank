@@ -1,12 +1,9 @@
-import com.sun.xml.internal.ws.util.StringUtils;
 
 import java.util.Scanner;
-import java.util.Date;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
+
 
 public class Main {
+
 
     public static void main(String[] args) {
         menu();
@@ -30,7 +27,7 @@ public class Main {
 
                     break;
                 case 2:
-                    //Access account via login
+                    searchById();
                     break;
 
                 case 3:
@@ -64,7 +61,7 @@ public class Main {
         }
         System.out.println("Thank you, " + firstName + " " + secondName + ", where do you live?");
         address = infoScanner.next();
-        System.out.println("Great! Now please tell us what year you were born in");
+        System.out.println("Great! Now please tell us what year you were born in in the form yyyy-mm-dd");
         String year = infoScanner.next();
         String day = "";
         String month = "";
@@ -94,7 +91,6 @@ public class Main {
             year = infoScanner.next();
             recursiveYearFunction(year,infoScanner);
         }
-
         String date = year+"-"+month+"-"+day;
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
@@ -106,7 +102,14 @@ public class Main {
         DatabaseConnection.main("password", createCustomer, 1);
         //INSERT INTO SQL
     }
-
+    private static void searchById(){
+        Scanner idScanner = new Scanner(System.in);
+        System.out.println("Please enter your account id");
+        int id = idScanner.nextInt();
+        DatabaseConnection.main("password", "SELECT * FROM account  " +
+                "JOIN customer ON account.customerID = customer.id " +
+                "WHERE account.accountID = "+id+";", 2);
+    }
     public static String askGenderAgain() {
         System.out.println("Error. Please type m or f for your gender");
         Scanner scanner = new Scanner(System.in);
@@ -129,7 +132,6 @@ public class Main {
         // only got here if we didn't return false
         return true;
     }
-
     public static boolean validateYear(String year) {
         if (isInteger(year)){
             if (Integer.parseInt(year) >1900 && Integer.parseInt(year) < 2000){
@@ -168,7 +170,6 @@ public class Main {
         }
         return false;
     }
-
     public static boolean verifyPhoneNo(String number) {
         String regex = "\\d+";
         if (number.length() == 11) {
@@ -197,6 +198,18 @@ public class Main {
             return myEmail;
         }
         return email;
+    }
+    public static void Overdraft(){
+        Scanner overDraftScanner = new Scanner(System.in);
+        System.out.println("Please enter the account id of the account you want to add overdraft to");
+        int accountId = overDraftScanner.nextInt();
+        System.out.println("Please enter the amount of overdraft you want, the maximum is £10,000");
+        int overDraft = overDraftScanner.nextInt();
+        if (overDraft > 10000) {
+            Overdraft();
+        } else {
+            DatabaseConnection.main("password", "UPDATE account SET balance = balance + " +overDraft+" WHERE accountID = "+ accountId +" ", 3);
+        }
     }
     public static void recursiveYearFunction(String year, Scanner infoScanner){
         if (validateYear(year)){

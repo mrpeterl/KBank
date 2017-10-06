@@ -18,6 +18,7 @@ CREATE TABLE account(
 	customerID INT NOT NULL, 
 	creationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
 	balance DECIMAL(13,2),
+	overdraft INT DEFAULT 0,
 	FOREIGN KEY (customerID) REFERENCES customer(id)
 );
 
