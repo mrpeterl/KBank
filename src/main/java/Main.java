@@ -265,7 +265,7 @@ public class Main {
     public static void makeWithdrawl(int id){
 
         String myCommand = "SELECT balance FROM Account WHERE accountID= "+id+";";
-        DatabaseConnection.main("passsword",myCommand,4);
+        DatabaseConnection.main("password",myCommand,4);
         System.out.println("How much would you like to withdraw? Withdrawls must be whole numbers (integers)");
         Scanner scanner = new Scanner(System.in);
         String amount = scanner.next();
@@ -273,7 +273,7 @@ public class Main {
             if (DatabaseConnection.valuesForMain > Integer.parseInt(amount)){
                 //Then they can afford the withdrawl
                 myCommand = "UPDATE account SET balance = balance -"+ amount+"WHERE accountID = "+id+";";
-                DatabaseConnection.main("passsword",myCommand,4);
+                DatabaseConnection.main("password",myCommand,4);
                 System.out.println("Your current balance is "+ (Integer.parseInt(amount) - DatabaseConnection.valuesForMain));
             }
             else {
