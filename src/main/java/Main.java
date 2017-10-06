@@ -270,11 +270,11 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String amount = scanner.next();
         if (isInteger(amount)){
-            if (DatabaseConnection.valuesForMain > amount){
+            if (DatabaseConnection.valuesForMain > Integer.parseInt(amount)){
                 //Then they can afford the withdrawl
                 myCommand = "UPDATE account SET balance = balance -"+ amount+"WHERE accountID = "+id+";";
                 DatabaseConnection.main("passsword",myCommand,4);
-                System.out.println("Your current balance is "+ amount - DatabaseConnection.valuesForMain);
+                System.out.println("Your current balance is "+ (Integer.parseInt(amount) - DatabaseConnection.valuesForMain));
             }
             else {
                 System.out.println("You cannot afford to make this withdrawl");
