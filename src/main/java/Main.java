@@ -1,17 +1,11 @@
-import com.sun.xml.internal.ws.util.StringUtils;
 
 import java.util.Scanner;
-import java.util.Date;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
+
 
 public class Main {
 
     public static void main(String[] args)
     {
-        //DatabaseConnection.main("password", "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('Test', 'Data', 'f', '1999-01-01', '123 Rainbow drive', 'test@gmail.com', '01234567891');", 1);
-        //DatabaseConnection.main("password", "SELECT * FROM customer WHERE id = 00000001", 2);
         menu();
     }
 
@@ -33,7 +27,7 @@ public class Main {
 
                     break;
                 case 2:
-                    //Access account via login
+                    searchById();
                     break;
 
                 case 3:
@@ -54,9 +48,9 @@ public class Main {
         Scanner infoScanner = new Scanner(System.in);
         System.out.println("\nThank you for deciding to create an account with KBank!" +
                 "\nWhat is your first name?");
-        firstName = infoScanner.next();
+        firstName = infoScanner.nextLine();
         System.out.println("What is your surname?");
-        secondName = infoScanner.next();
+        secondName = infoScanner.nextLine();
         System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
                 ",\nthen please use another bank. Thank you :)");
         String myG = infoScanner.next().toLowerCase();
@@ -67,10 +61,9 @@ public class Main {
             gender = askGenderAgain().charAt(0);
         }
         System.out.println("Thank you, "+firstName + " " + secondName + ", where do you live?");
-        address = infoScanner.nextLine();
+        address = infoScanner.next();
         System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
         dateOfBirth = infoScanner.next();
-        Date theDate = getDob(dateOfBirth);
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
         phoneNumbers(phone);
@@ -82,6 +75,16 @@ public class Main {
         //INSERT INTO SQL
         return;
     }
+
+    private static void searchById(){
+        Scanner idScanner = new Scanner(System.in);
+        System.out.println("Please enter your account id");
+        int id = idScanner.nextInt();
+        DatabaseConnection.main("password", "SELECT * FROM account  " +
+                "JOIN customer ON account.customerID = customer.id " +
+                "WHERE account.accountID = "+id+";", 2);
+    }
+
     public static String askGenderAgain(){
         System.out.println("Error. Please type m or f for your gender");
         Scanner scanner = new Scanner(System.in);
@@ -104,20 +107,7 @@ public class Main {
         // only got here if we didn't return false
         return true;
     }
-    public static Date getDob(String date){
-        Date theDate = new Date();
-        try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            theDate = formatter.parse(date);
-            return theDate;
-        }   catch (Exception ex){
-            System.out.println("Error. Please type your date of birth again in the format yyyy-mm-dd");
-            Scanner scanner = new Scanner(System.in);
-            String dateofBirth = scanner.next();
-            getDob(dateofBirth);
-        }
-        return theDate;
-    }
+
     public static boolean verifyPhoneNo(String number) {
         String regex = "\\d+";
         if (number.length() == 11) {
@@ -144,6 +134,18 @@ public class Main {
             return myEmail;
         }
         return email;
+    }
+    public static void Overdraft(){
+        Scanner overDraftScanner = new Scanner(System.in);
+        System.out.println("Please enter the account id of the account you want to add overdraft to");
+        int accountId = overDraftScanner.nextInt();
+        System.out.println("Please enter the amount of overdraft you want, the maximum is £10,000");
+        int overDraft = overDraftScanner.nextInt();
+        if (overDraft > 10000) {
+            Overdraft();
+        } else {
+            DatabaseConnection.main("password", "UPDATE account SET balance = balance + " +overDraft+" WHERE accountID = "+ accountId +" ", 3);
+        }
     }
 
 }
