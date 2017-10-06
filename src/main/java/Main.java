@@ -206,9 +206,18 @@ public class Main {
                 System.out.println("Great! Now please tell us what day you were born in");
                 String day = infoScanner.next();
                 if (validateDay(day, Integer.parseInt(month),Integer.parseInt(year))){
-
+                    //do nothing
+                }
+                else {
+                    recursiveYearFunction(year, infoScanner);
                 }
             }
+            else {
+                recursiveYearFunction(year,infoScanner);
+            }
+        }
+        else {
+            recursiveYearFunction(year,infoScanner);
         }
     }
 }
