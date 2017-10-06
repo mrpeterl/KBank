@@ -132,7 +132,7 @@ public class Main {
 
     public static boolean validateYear(String year) {
         if (isInteger(year)){
-            if (Integer.parseInt(year) <1900 || Integer.parseInt(year) > 2000){
+            if (Integer.parseInt(year) >1900 && Integer.parseInt(year) < 2000){
                 return true;
             }
         }
@@ -141,7 +141,7 @@ public class Main {
 
     public static boolean validateMonth(String month) {
         if (isInteger(month)){
-            if (Integer.parseInt(month) <13 || Integer.parseInt(month) > 0){
+            if (Integer.parseInt(month) <13 && Integer.parseInt(month) > 0){
                 return true;
             }
         }
@@ -150,16 +150,16 @@ public class Main {
 
     public static boolean validateDay(String day, int month, int year){
         if (isInteger(day)){
-            if ((Integer.parseInt(day) <32 || Integer.parseInt(day) > 0) && (!(month == 9 || month == 11 || month ==4 || month == 6))){
+            if ((Integer.parseInt(day) <32 && Integer.parseInt(day) > 0) && (!(month == 9 || month == 11 || month ==4 || month == 6))){
                 return true;
             }
-            else if ((Integer.parseInt(day) <31 || Integer.parseInt(day) > 0) && ((month == 9 || month == 11 || month ==4 || month == 6))){
+            else if ((Integer.parseInt(day) <31 && Integer.parseInt(day) > 0) && ((month == 9 || month == 11 || month ==4 || month == 6))){
                 return true;
             }
-            else if ((Integer.parseInt(day) <30 || Integer.parseInt(day) > 0) && ((month == 2 && (year%4==0)))){
+            else if ((Integer.parseInt(day) <30 && Integer.parseInt(day) > 0) && ((month == 2 && (year%4==0)))){
                 return true;
             }
-            else if ((Integer.parseInt(day) <29 || Integer.parseInt(day) > 0) && ((month == 2))) {
+            else if ((Integer.parseInt(day) <29 && Integer.parseInt(day) > 0) && ((month == 2))) {
                 return true;
             }
             else{
@@ -200,23 +200,29 @@ public class Main {
     }
     public static void recursiveYearFunction(String year, Scanner infoScanner){
         if (validateYear(year)){
-            System.out.println("Great! Now please tell us what month you were born in");
+            System.out.println("Great! Now please tell us what month you were born in. Enter a number 1-12");
             String month = infoScanner.next();
             if (validateMonth(month)){
-                System.out.println("Great! Now please tell us what day you were born in");
+                System.out.println("Great! Now please tell us what day you were born in. Enter a number 1-31");
                 String day = infoScanner.next();
                 if (validateDay(day, Integer.parseInt(month),Integer.parseInt(year))){
                     //do nothing
                 }
                 else {
+                    System.out.println("Error. Invalid date. Please input a valid year");
+                    year = infoScanner.next();
                     recursiveYearFunction(year, infoScanner);
                 }
             }
             else {
+                System.out.println("Error. Invalid date. Please input a valid year");
+                year = infoScanner.next();
                 recursiveYearFunction(year,infoScanner);
             }
         }
         else {
+            System.out.println("Error. Invalid date. Please input a valid year");
+            year = infoScanner.next();
             recursiveYearFunction(year,infoScanner);
         }
     }
