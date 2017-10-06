@@ -213,7 +213,7 @@ public class Main {
         if (overDraft > 10000) {
             Overdraft();
         } else {
-            if ((overDraft + DatabaseConnection.valuesForMain) > 10000) {
+            if ((overDraft + DatabaseConnection.valuesForMain) < 10000) {
                 DatabaseConnection.main("password", "UPDATE account SET balance = balance + " + overDraft + ",  overdraft = overdraft + " + overDraft + " WHERE accountID = " + accountId + "; ", 3);
             } else {
                 System.out.println("By taking this amount you would go over the limit of 10000, please re-enter");
