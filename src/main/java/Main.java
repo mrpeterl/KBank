@@ -264,17 +264,17 @@ public class Main {
     }
     public static void makeWithdrawl(int id){
 
-        String myCommand = "SELECT balance FROM Account WHERE accountID= "+id+";";
-        DatabaseConnection.main("password",myCommand,4);
+        String myCommand = "SELECT balance FROM account WHERE accountID= "+id+";";
+        DatabaseConnection.main("password",myCommand,5);
         System.out.println("How much would you like to withdraw? Withdrawls must be whole numbers (integers)");
         Scanner scanner = new Scanner(System.in);
         String amount = scanner.next();
         if (isInteger(amount)){
             if (DatabaseConnection.valuesForMain > Integer.parseInt(amount)){
                 //Then they can afford the withdrawl
-                myCommand = "UPDATE account SET balance = balance -"+ amount+"WHERE accountID = "+id+";";
-                DatabaseConnection.main("password",myCommand,4);
-                System.out.println("Your current balance is "+ (Integer.parseInt(amount) - DatabaseConnection.valuesForMain));
+                myCommand = "UPDATE account SET balance = balance - "+ amount+" WHERE accountID = "+id+";";
+                DatabaseConnection.main("password",myCommand,3);
+                System.out.println("Your current balance is "+( DatabaseConnection.valuesForMain - (Integer.parseInt(amount))));
             }
             else {
                 System.out.println("You cannot afford to make this withdrawl");
