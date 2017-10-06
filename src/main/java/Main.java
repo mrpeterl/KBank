@@ -211,7 +211,7 @@ public class Main {
         if (overDraft > 10000) {
             Overdraft();
         } else {
-            DatabaseConnection.main("password", "UPDATE account SET balance = balance + " +overDraft+" WHERE accountID = "+ accountId +" ", 3);
+            DatabaseConnection.main("password", "UPDATE account SET balance = balance + " +overDraft+",  overdraft = overdraft + "+overDraft+" WHERE accountID = "+ accountId +"; ", 3);
         }
     }
     public static void recursiveYearFunction(String year, Scanner infoScanner){
