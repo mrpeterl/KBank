@@ -16,7 +16,8 @@ public class Main {
             String mainMessage = String.format("Please enter the number corresponding to your desired action"
                     + "\n1.I would like to create a new account"
                     + "\n2.I would like to access my account"
-                    + "\n3.Exit");
+                    + "\n3.I would like to take out an overdraft"
+                    + "\n4.Exit");
             System.out.println(mainMessage);
             Scanner menuScanner = new Scanner(System.in);
 
@@ -31,8 +32,10 @@ public class Main {
                     break;
 
                 case 3:
+                    Overdraft();
+                    break;
+                case 4:
                     System.exit(0);
-
                     break;
                 default:
                     System.out.println("Error. Please enter a number between 1 and 3");
