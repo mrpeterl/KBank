@@ -8,10 +8,7 @@ import java.text.DateFormat;
 
 public class Main {
 
-    public static void main(String[] args)
-    {
-        //DatabaseConnection.main("password", "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('Test', 'Data', 'f', '1999-01-01', '123 Rainbow drive', 'test@gmail.com', '01234567891');", 1);
-        //DatabaseConnection.main("password", "SELECT * FROM customer WHERE id = 00000001", 2);
+    public static void main(String[] args) {
         menu();
     }
 
@@ -44,7 +41,7 @@ public class Main {
                     System.out.println("Error. Please enter a number between 1 and 3");
                     menu();//Show menu again if invalid input
             }
-        }while(selection!=3);
+        } while (selection != 3);
 
     }
 
@@ -54,89 +51,145 @@ public class Main {
         Scanner infoScanner = new Scanner(System.in);
         System.out.println("\nThank you for deciding to create an account with KBank!" +
                 "\nWhat is your first name?");
-        firstName = infoScanner.next();
+        firstName = infoScanner.nextLine();
         System.out.println("What is your surname?");
-        secondName = infoScanner.next();
+        secondName = infoScanner.nextLine();
         System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
                 ",\nthen please use another bank. Thank you :)");
         String myG = infoScanner.next().toLowerCase();
-        if (myG.equals("m") || myG.equals("f")){
+        if (myG.equals("m") || myG.equals("f")) {
             gender = myG.charAt(0);
-        }
-        else {
+        } else {
             gender = askGenderAgain().charAt(0);
         }
-        System.out.println("Thank you, "+firstName + " " + secondName + ", where do you live?");
-        address = infoScanner.nextLine();
-        System.out.println("Great! Now please tell us your date of birth in the form yyyy-mm-dd");
-        dateOfBirth = infoScanner.next();
-        Date theDate = getDob(dateOfBirth);
+        System.out.println("Thank you, " + firstName + " " + secondName + ", where do you live?");
+        address = infoScanner.next();
+        System.out.println("Great! Now please tell us what year you were born in");
+        String year = infoScanner.next();
+        String day = "";
+        String month = "";
+        if (validateYear(year)){
+            System.out.println("Great! Now please tell us what month you were born in");
+            month = infoScanner.next();
+            if (validateMonth(month)){
+                System.out.println("Great! Now please tell us what day you were born in");
+                day = infoScanner.next();
+                if (validateDay(day, Integer.parseInt(month),Integer.parseInt(year))){
+                    //Do nothing, this means all the values are valid
+                }
+                else {
+                    System.out.println("Error. Please input a valid year");
+                    year = infoScanner.next();
+                    recursiveYearFunction(year,infoScanner);
+                }
+            }
+            else {
+                System.out.println("Error. Please input a valid year");
+                year = infoScanner.next();
+                recursiveYearFunction(year,infoScanner);
+            }
+        }
+        else {
+            System.out.println("Error. Please input a valid year");
+            year = infoScanner.next();
+            recursiveYearFunction(year,infoScanner);
+        }
+
+        String date = year+"-"+month+"-"+day;
         System.out.println("What is your phone number?");
         phone = infoScanner.next();
         phoneNumbers(phone);
         //Make sure it's an 11 digit integer
         System.out.println("And lastly, what is your email address?");
         email = verifyEmail(infoScanner.next());
-        String createCustomer = "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('"+firstName+"','"+secondName+"','"+gender+"','"+dateOfBirth+"','"+address+"','"+email+"','"+phone+"');";
+        String createCustomer = "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('" + firstName + "','" + secondName + "','" + gender + "','" + date + "','" + address + "','" + email + "','" + phone + "');";
         DatabaseConnection.main("password", createCustomer, 1);
         //INSERT INTO SQL
-        return;
     }
-    public static String askGenderAgain(){
+
+    public static String askGenderAgain() {
         System.out.println("Error. Please type m or f for your gender");
         Scanner scanner = new Scanner(System.in);
         String gender = scanner.next().toLowerCase();
-        if (gender.equals("m") || gender.equals("f")){
+        if (gender.equals("m") || gender.equals("f")) {
             return gender;
-        }
-        else {
+        } else {
             return askGenderAgain();
         }
     }
+
     public static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return false;
         }
         // only got here if we didn't return false
         return true;
     }
-    public static Date getDob(String date){
-        Date theDate = new Date();
-        try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            theDate = formatter.parse(date);
-            return theDate;
-        }   catch (Exception ex){
-            System.out.println("Error. Please type your date of birth again in the format yyyy-mm-dd");
-            Scanner scanner = new Scanner(System.in);
-            String dateofBirth = scanner.next();
-            getDob(dateofBirth);
-        }
-        return theDate;
-    }
-    public static boolean verifyPhoneNo(String number) {
-        String regex = "\\d+";
-        if (number.length() == 11) {
-            if (number.matches(regex)){
+
+    public static boolean validateYear(String year) {
+        if (isInteger(year)){
+            if (Integer.parseInt(year) >1900 && Integer.parseInt(year) < 2000){
                 return true;
             }
         }
         return false;
     }
+
+    public static boolean validateMonth(String month) {
+        if (isInteger(month)){
+            if (Integer.parseInt(month) <13 && Integer.parseInt(month) > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean validateDay(String day, int month, int year){
+        if (isInteger(day)){
+            if ((Integer.parseInt(day) <32 && Integer.parseInt(day) > 0) && (!(month == 9 || month == 11 || month ==4 || month == 6))){
+                return true;
+            }
+            else if ((Integer.parseInt(day) <31 && Integer.parseInt(day) > 0) && ((month == 9 || month == 11 || month ==4 || month == 6))){
+                return true;
+            }
+            else if ((Integer.parseInt(day) <30 && Integer.parseInt(day) > 0) && ((month == 2 && (year%4==0)))){
+                return true;
+            }
+            else if ((Integer.parseInt(day) <29 && Integer.parseInt(day) > 0) && ((month == 2))) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static boolean verifyPhoneNo(String number) {
+        String regex = "\\d+";
+        if (number.length() == 11) {
+            if (number.matches(regex)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void phoneNumbers(String number) {
-        if (!verifyPhoneNo(number)){
+        if (!verifyPhoneNo(number)) {
             System.out.println("Error. Please enter a valid phone number");
             Scanner scanner = new Scanner(System.in);
             String string = scanner.next();
             phoneNumbers(string);
         }
     }
-    public static String verifyEmail(String email){
-        if (!(email.contains('@'+"") && email.contains('.'+""))){
+
+    public static String verifyEmail(String email) {
+        if (!(email.contains('@' + "") && email.contains('.' + ""))) {
             System.out.println("Error. Please enter a valid email address");
             Scanner scanner = new Scanner(System.in);
             String myEmail = scanner.next();
@@ -145,6 +198,33 @@ public class Main {
         }
         return email;
     }
-
+    public static void recursiveYearFunction(String year, Scanner infoScanner){
+        if (validateYear(year)){
+            System.out.println("Great! Now please tell us what month you were born in. Enter a number 1-12");
+            String month = infoScanner.next();
+            if (validateMonth(month)){
+                System.out.println("Great! Now please tell us what day you were born in. Enter a number 1-31");
+                String day = infoScanner.next();
+                if (validateDay(day, Integer.parseInt(month),Integer.parseInt(year))){
+                    //do nothing
+                }
+                else {
+                    System.out.println("Error. Invalid date. Please input a valid year");
+                    year = infoScanner.next();
+                    recursiveYearFunction(year, infoScanner);
+                }
+            }
+            else {
+                System.out.println("Error. Invalid date. Please input a valid year");
+                year = infoScanner.next();
+                recursiveYearFunction(year,infoScanner);
+            }
+        }
+        else {
+            System.out.println("Error. Invalid date. Please input a valid year");
+            year = infoScanner.next();
+            recursiveYearFunction(year,infoScanner);
+        }
+    }
 }
 
