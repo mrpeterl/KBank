@@ -61,7 +61,7 @@ public class Main {
         }
         System.out.println("Thank you, " + firstName + " " + secondName + ", where do you live?");
         address = infoScanner.next();
-        System.out.println("Great! Now please tell us what year you were born in in the form yyyy-mm-dd");
+        System.out.println("Great! Now please tell us what year you were born in");
         String year = infoScanner.next();
         String day = "";
         String month = "";
