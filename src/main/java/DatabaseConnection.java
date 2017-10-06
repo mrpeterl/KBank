@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class DatabaseConnection {
+    public static int valuesForMain;
     public static void main(String password, String command, int utility) {
 
 
@@ -31,6 +32,16 @@ public class DatabaseConnection {
                     break;
                 case 3:
                     statement.executeUpdate(command);
+                    break;
+                case 4:
+                    ResultSet overdraft = statement.executeQuery(command);
+                    overdraft.next();
+                    valuesForMain = overdraft.getInt("overdraft");
+                    break;
+                case 5:
+                    ResultSet withdraw = statement.executeQuery(command);
+                    withdraw.next();
+                    valuesForMain = withdraw.getInt("balance");
                     break;
             }
 
