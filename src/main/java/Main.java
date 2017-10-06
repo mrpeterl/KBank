@@ -16,7 +16,8 @@ public class Main {
             String mainMessage = String.format("Please enter the number corresponding to your desired action"
                     + "\n1.I would like to create a new account"
                     + "\n2.I would like to access my account"
-                    + "\n3.Exit");
+                    + "\n3.I would like to take out an overdraft"
+                    + "\n4.Exit");
             System.out.println(mainMessage);
             Scanner menuScanner = new Scanner(System.in);
 
@@ -31,8 +32,10 @@ public class Main {
                     break;
 
                 case 3:
+                    Overdraft();
+                    break;
+                case 4:
                     System.exit(0);
-
                     break;
                 default:
                     System.out.println("Error. Please enter a number between 1 and 3");
@@ -201,15 +204,23 @@ public class Main {
     }
     public static void Overdraft(){
         Scanner overDraftScanner = new Scanner(System.in);
+
         System.out.println("Please enter the account id of the account you want to add overdraft to");
         int accountId = overDraftScanner.nextInt();
+        DatabaseConnection.main("password", "SELECT * FROM account WHERE accountID = " + accountId + ";", 4);
         System.out.println("Please enter the amount of overdraft you want, the maximum is £10,000");
         int overDraft = overDraftScanner.nextInt();
         if (overDraft > 10000) {
             Overdraft();
         } else {
-            DatabaseConnection.main("password", "UPDATE account SET balance = balance + " +overDraft+" WHERE accountID = "+ accountId +" ", 3);
+            if ((overDraft + DatabaseConnection.valuesForMain) > 10000) {
+                DatabaseConnection.main("password", "UPDATE account SET balance = balance + " + overDraft + ",  overdraft = overdraft + " + overDraft + " WHERE accountID = " + accountId + "; ", 3);
+            } else {
+                System.out.println("By taking this amount you would go over the limit of 10000, please re-enter");
+                Overdraft();
+            }
         }
+        menu();
     }
     public static void recursiveYearFunction(String year, Scanner infoScanner){
         if (validateYear(year)){
