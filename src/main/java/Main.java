@@ -10,8 +10,6 @@ public class Main {
 
     public static void main(String[] args)
     {
-        //DatabaseConnection.main("password", "INSERT INTO customer(firstName, lastName, gender, dateOfBirth, address, email, phone) VALUES ('Test', 'Data', 'f', '1999-01-01', '123 Rainbow drive', 'test@gmail.com', '01234567891');", 1);
-        //DatabaseConnection.main("password", "SELECT * FROM customer WHERE id = 00000001", 2);
         menu();
     }
 
@@ -54,9 +52,9 @@ public class Main {
         Scanner infoScanner = new Scanner(System.in);
         System.out.println("\nThank you for deciding to create an account with KBank!" +
                 "\nWhat is your first name?");
-        firstName = infoScanner.next();
+        firstName = infoScanner.nextLine();
         System.out.println("What is your surname?");
-        secondName = infoScanner.next();
+        secondName = infoScanner.nextLine();
         System.out.println("Cool! Now what is your gender? Type m or f. If you are non binary" +
                 ",\nthen please use another bank. Thank you :)");
         String myG = infoScanner.next().toLowerCase();
