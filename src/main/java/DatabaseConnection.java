@@ -30,6 +30,7 @@ public class DatabaseConnection {
                     }
                     break;
                 case 3:
+                    statement.executeUpdate(command);
                     break;
             }
 

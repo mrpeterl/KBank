@@ -16,7 +16,8 @@ public class Main {
             String mainMessage = String.format("Please enter the number corresponding to your desired action"
                     + "\n1.I would like to create a new account"
                     + "\n2.I would like to access my account"
-                    + "\n3.Exit");
+                    + "\n3.I would like to take out an overdraft"
+                    + "\n4.Exit");
             System.out.println(mainMessage);
             Scanner menuScanner = new Scanner(System.in);
 
@@ -31,8 +32,10 @@ public class Main {
                     break;
 
                 case 3:
+                    Overdraft();
+                    break;
+                case 4:
                     System.exit(0);
-
                     break;
                 default:
                     System.out.println("Error. Please enter a number between 1 and 3");
@@ -109,6 +112,18 @@ public class Main {
         DatabaseConnection.main("password", "SELECT * FROM account  " +
                 "JOIN customer ON account.customerID = customer.id " +
                 "WHERE account.accountID = "+id+";", 2);
+        System.out.println("Do you wish to make a withdrawl? Please input y for yes or n for no");
+        String response = idScanner.next();
+        if (response.toLowerCase().equals("y")){
+            makeWithdrawl(id);
+        }
+        else if (response.toLowerCase().equals("n")){
+            menu();
+        }
+        else {
+            System.out.println("Error. Input not recognised. Returning to main menu");
+            menu();
+        }
     }
     public static String askGenderAgain() {
         System.out.println("Error. Please type m or f for your gender");
@@ -236,7 +251,31 @@ public class Main {
         else {
             System.out.println("Error. Invalid date. Please input a valid year");
             year = infoScanner.next();
-            recursiveYearFunction(year,infoScanner);
+            recursiveYearFunction(year, infoScanner);
+        }
+    }
+    public static void makeWithdrawl(int id){
+
+        String myCommand = "SELECT balance FROM Account WHERE accountID= "+id+";";
+        DatabaseConnection.main("passsword",myCommand,4);
+        System.out.println("How much would you like to withdraw? Withdrawls must be whole numbers (integers)");
+        Scanner scanner = new Scanner(System.in);
+        String amount = scanner.next();
+        if (isInteger(amount)){
+            if (DatabaseConnection.valuesForMain > amount){
+                //Then they can afford the withdrawl
+                myCommand = "UPDATE account SET balance = balance -"+ amount+"WHERE accountID = "+id+";";
+                DatabaseConnection.main("passsword",myCommand,4);
+                System.out.println("Your current balance is "+ amount - DatabaseConnection.valuesForMain);
+            }
+            else {
+                System.out.println("You cannot afford to make this withdrawl");
+                makeWithdrawl(id);
+            }
+        }
+        else {
+            System.out.println("Error. enter an integer value");
+            makeWithdrawl(id);
         }
     }
 }
